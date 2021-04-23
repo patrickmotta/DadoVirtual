@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import LottieView from 'lottie-react-native';
 
   // const [NumDado, setNumDado] = useState(null) 
 
@@ -8,6 +9,13 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 export default function App() {
 
   const [numDado, setNumDado] = useState(5);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() =>{
+
+    setTimeout(() =>{setLoading(false)}, 4000);
+
+  }, []);
 
   function girarDado(){
 
@@ -23,15 +31,25 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      {loading ? (
+        <LottieView source={require("./assets/load.json")}
+          autoPlay
+          style={styles.lottie}
+        />
+      ):(
+        
+        <TouchableOpacity
+          activeOpacity={0}  
+          style={styles.button}
+          onPress={girarDado}
+          >
+          
+          <Text style={styles.text}>{numDado}</Text>
 
-      <TouchableOpacity
-        activeOpacity={0}  
-        style={styles.button}
-        onPress={girarDado}
-        >
-        <Text style={styles.text}>{numDado}</Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
 
+
+      )}
       <StatusBar style="auto" />
     </View>
   );
@@ -56,5 +74,8 @@ const styles = StyleSheet.create({
     fontSize: 200,
     // marginTop: Platform.select({ ios: "90%", android: "50%" })
     
+  },
+  lottie:{
+    backgroundColor: "black"
   }
 });
